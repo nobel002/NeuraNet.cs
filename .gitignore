@@ -1,3 +1,7 @@
-**/.vscode
-**/bin
-**/obj
+# Some files you shouldent be able to see
+/bin/
+/obj/
+ai.csproj
+/data/
+.vscode/
+# Thats it
