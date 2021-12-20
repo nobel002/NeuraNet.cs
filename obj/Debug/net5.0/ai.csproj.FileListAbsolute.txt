@@ -1,0 +1,16 @@
+D:\C# Files\ai\bin\Debug\net5.0\ai.exe
+D:\C# Files\ai\bin\Debug\net5.0\ai.deps.json
+D:\C# Files\ai\bin\Debug\net5.0\ai.runtimeconfig.json
+D:\C# Files\ai\bin\Debug\net5.0\ai.runtimeconfig.dev.json
+D:\C# Files\ai\bin\Debug\net5.0\ai.dll
+D:\C# Files\ai\bin\Debug\net5.0\ref\ai.dll
+D:\C# Files\ai\bin\Debug\net5.0\ai.pdb
+D:\C# Files\ai\obj\Debug\net5.0\ai.csproj.AssemblyReference.cache
+D:\C# Files\ai\obj\Debug\net5.0\ai.GeneratedMSBuildEditorConfig.editorconfig
+D:\C# Files\ai\obj\Debug\net5.0\ai.AssemblyInfoInputs.cache
+D:\C# Files\ai\obj\Debug\net5.0\ai.AssemblyInfo.cs
+D:\C# Files\ai\obj\Debug\net5.0\ai.csproj.CoreCompileInputs.cache
+D:\C# Files\ai\obj\Debug\net5.0\ai.dll
+D:\C# Files\ai\obj\Debug\net5.0\ref\ai.dll
+D:\C# Files\ai\obj\Debug\net5.0\ai.pdb
+D:\C# Files\ai\obj\Debug\net5.0\ai.genruntimeconfig.cache
