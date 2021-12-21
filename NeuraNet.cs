@@ -11,8 +11,8 @@ namespace NeuraNet
   class NetCreator
   {
     public int[] shape { get; set; }
-    public float[][] nodes { get; }
-    public float[][][] synapses { get; }
+    public float[][] nodes { get; set; }
+    public float[][][] synapses { get; set; }
     public Net[] enviroment { get; set; }
     public int numberOfSpecimen { get; set; }
     public int trainingTime { get; set; }
@@ -30,8 +30,12 @@ namespace NeuraNet
     /// </summary>
     public void Init()
     {
-      Console.WriteLine("Initing");
+      Console.WriteLine("Initing...");
+      // Console.WriteLine(this.shape);
       CreateNodes();
+      Console.WriteLine("Created Nodes...");
+      CreateSynapses();
+      Console.WriteLine("Created synapses...");
     }
 
     /// <summary>
@@ -39,11 +43,25 @@ namespace NeuraNet
     /// </summary>
     void CreateNodes()
     {
-      //ToDO(nobel) check wheter it should be -1 or not.
-      for (int i = 0; i <= shape.Length; i++)
+      this.nodes = new float[this.shape.Length][];
+      for (int i = 0; i <= shape.Length - 1; i++)
       {
         this.nodes[i] = new float[this.shape[i]];
-        Array.Clear(this.nodes[i], 0, this.shape[i]);
+        //Array.Clear(this.nodes[i], 0, this.shape[i]);
+      }
+    }
+
+    void CreateSynapses()
+    {
+      this.synapses = new float[this.shape.Length - 1][][];
+      for (int i = 0; i <= this.shape.Length - 2; i++)
+      {
+        this.synapses[i] = new float[this.shape[i + 1]][];
+        for (int j = 0; j <= this.synapses[i].Length - 1; j++)
+        {
+          this.synapses[i][j] = new float[this.shape[i]];
+          //Array.Clear(this.synapses[i][j], 0, this.shape[i]);
+        }
       }
     }
   }

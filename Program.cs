@@ -12,6 +12,8 @@ namespace ai
       const int trainTime = (int)10e3;
       NetCreator test = new NetCreator(shape, specimenCount, trainTime);
       test.Init();
+      float[][] nodes = test.nodes;
+      Console.WriteLine(nodes);
     }
   }
 }
