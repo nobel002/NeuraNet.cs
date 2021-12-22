@@ -207,6 +207,31 @@ namespace NeuraNet
       }
       return this.synapses;
     }
-  }
 
+    /// <summary>
+    /// This loads a .ai file into a Net instance.
+    /// !!Warning!!
+    /// This directly modifies the synaps data and their is no way to revert it.
+    /// </summary>
+    /// <param name="path">The path to the .ai file you want to load.</param>
+    /// <returns>It retruns the synapses after their updated</returns>
+    public double[][][] LoadSynapses(string path)
+    {
+      // TODO(nobel002) Check if the size of the provided .ai file is the same as the shape of the existing synaps matrix.
+      string[] text = File.ReadAllLines(path);
+      for (int i = 0; i <= text.Length - 1; i++)
+      {
+        string[] splittedStrings = text[i].Split('|');
+        for (int j = 0; j <= splittedStrings.Length - 1; j++)
+        {
+          string[] individualNumbers = splittedStrings[j].Split(';');
+          for (int k = 0; k <= individualNumbers[j].Length - 1; k++)
+          {
+            this.synapses[i][j][k] = Convert.ToDouble(individualNumbers[k]);
+          }
+        }
+      }
+      return this.synapses;
+    }
+  }
 }
