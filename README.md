@@ -1,3 +1,6 @@
+
+![The Icon, an N with the shape o fa brain attached to it](images/Icon.png)
+
 # NeuraNet.cs
 This is a repo in which i hope to create a library or code base which may help with creating AI in CSharp. I know this isn't the best, not fastest database. But it's simple and I made it as an exersise for me.
 ## How to use
