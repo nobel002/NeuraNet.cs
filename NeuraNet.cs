@@ -139,27 +139,13 @@ namespace NeuraNet
           this.nodes[0][i] = inputs[i];
         }
 
-
-        // ToDo(Nobel) Remove this if the other thing works.
-        // for (int i = 1; i <= this.nodes.Length - 1; i++)
-        // {
-        //   for (int j = 0; j <= this.nodes[i].Length - 1; j++)
-        //   {
-        //     for (int k = 0; k <= this.synapses[i][j].Length - 1; k++)
-        //     {
-        //       this.nodes[i][j] += this.nodes[i - 1][j] * this.synapses[i][j][k];
-        //     }
-        //   }
-        // }
-
-
         // First We loop over all the nodes.
         for (int i = 1; i <= this.nodes.Length - 1; i++)
         {
           for (int j = 0; j <= this.nodes[i].Length - 1; j++)
           {
             //Now loop over all the synapses.
-            for (int synapsIndex = 0; synapsIndex <= this.synapses[i-1][j].Length - 1; synapsIndex++)
+            for (int synapsIndex = 0; synapsIndex <= this.synapses[i - 1][j].Length - 1; synapsIndex++)
             {
               this.nodes[i][j] += this.nodes[i - 1][synapsIndex] * this.synapses[i - 1][j][synapsIndex];
             }
@@ -203,33 +189,24 @@ namespace NeuraNet
       using (FileStream fs = File.Open(path, System.IO.FileMode.OpenOrCreate))
       {
         StreamWriter sw = new StreamWriter(fs);
-        sw.Write('[');
         for (int i = 0; i <= this.synapses.Length - 1; i++)
         {
-          sw.Write('[');
           for (int j = 0; j <= this.synapses[i].Length - 1; j++)
           {
-            sw.Write('[');
             for (int k = 0; k <= this.synapses[i][j].Length - 1; k++)
             {
-              sw.Write('[');
               sw.Write(this.synapses[i][j][k]);
-              if (k != this.synapses[i][j].Length)
-                sw.Write(',');
-              sw.Write(']');
+              if (k < this.synapses[i][j].Length - 1)
+                sw.Write(';');
             }
-            if (j != this.synapses[i].Length)
-              sw.Write(',');
-            sw.Write(']');
+            if (j < this.synapses[i].Length - 1)
+              sw.Write('|');
           }
-
-          if (i != this.synapses.Length)
-            sw.Write(',');
-          sw.Write(']');
+          sw.Write('\n');
         }
-        sw.Write(']');
       }
       return this.synapses;
     }
   }
+
 }
