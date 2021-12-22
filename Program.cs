@@ -11,7 +11,8 @@ namespace Program
     static void Main(string[] args)
     {
       Console.WriteLine("Hello World!");
-      int[] shape = { 4, 7, 7, 7, 2 };
+      // 128 -> 4
+      int[] shape = { 4, 4, 4, 2 };
       const int specimenCount = 10;
       const int trainTime = (int)10e3;
       NetCreator test = new NetCreator(shape, specimenCount, trainTime);

@@ -92,7 +92,6 @@ namespace NeuraNet
         }
       }
     }
-
     public Net[] CreateEnv()
     {
       for (int i = 0; i <= numberOfSpecimen - 1; i++)
@@ -196,11 +195,15 @@ namespace NeuraNet
             for (int k = 0; k <= this.synapses[i][j].Length - 1; k++)
             {
               sw.Write(this.synapses[i][j][k]);
-              if (k < this.synapses[i][j].Length - 1)
+              if (k < this.synapses[i][j].Length -1)
+              {
                 sw.Write(';');
+              }
             }
-            if (j < this.synapses[i].Length - 1)
+            if (j < this.synapses[i].Length -1)
+            {
               sw.Write('|');
+            }
           }
           sw.Write('\n');
         }

@@ -60,6 +60,7 @@ In contradiction to what you'd expect is the comma used as the decimal point. Th
 - [ ] Fix the `.gitignore` file  
 - [ ] Check how we can save the nets to dll's or somthing
 - [ ] Finish the net class  
+- [ ] Fix the write to `.ai` because its broken... It does generate the matrix but doesnt generate the .ai file properly try a {4x3,2} shap for example it doesnt write that to a file which is obviously wrong.
 
 + in the Creator class  
 - [ ] Train() { }  
