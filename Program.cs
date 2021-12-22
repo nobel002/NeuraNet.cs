@@ -1,6 +1,6 @@
 ﻿using System;
 using NeuraNet;
-namespace ai
+namespace Program
 {
   class Program
   {
@@ -11,7 +11,11 @@ namespace ai
       const int specimenCount = 10;
       const int trainTime = (int)10e3;
       NetCreator test = new NetCreator(shape, specimenCount, trainTime);
-      test.Init();
+      Net testNetwork = test.enviroment[0];
+      double[] testInput = { 420d, 6.9d, 0.42096d, 69420d };
+      testNetwork.SaveSynapses(@"D:\C# Files\ai\gen\synapses.ai");
+      Console.WriteLine(testNetwork.Use(testInput)[0]);
     }
   }
 }
+

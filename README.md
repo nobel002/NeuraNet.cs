@@ -32,6 +32,8 @@ namespace test
 
 ```
 ## TODO
+- [ ] Considere wheter to use `System.Double` or `System.Decimal`... This might impact speed and also might affect precision. (As in the decimal system might have a theoretical better precision as the numbers can become more acurate.)
+- [ ] so make the used variable a `<T>` variable and pass it as an argument so I can compile three versions: a `float`, `double` and `decimal` one.
 - [ ] make a published version.
 - [ ] Fix the `.gitignore` file  
 - [ ] Check how we can save the nets to dll's or somthing
@@ -42,5 +44,7 @@ namespace test
 - [ ] Mutate() { }  
 - [ ] Sort() { }  
 + in the Net class
+- [ ] Check wheter the provided synapses match the synapses shape in the SetSynapses();
+- [ ] Normalise the outputs.
 - [ ] Load(synapses) { }  
 - [ ] Store() { }  

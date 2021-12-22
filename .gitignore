@@ -1,5 +1,5 @@
 /data
 /obj
 /bin
-ai.csproj
 /.vscode
+/gen
