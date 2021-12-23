@@ -12,12 +12,12 @@ namespace Program
     {
       Console.WriteLine("Hello World!");
       // 128 -> 4
-      int[] shape = { 4, 4, 4, 2 };
+      int[] shape = { 2, 2, 2, 2 };
       const int specimenCount = 10;
       const int trainTime = (int)10e3;
       NetCreator test = new NetCreator(shape, specimenCount, trainTime);
       Net testNetwork = test.enviroment[0];
-      double[] testInput = { 420d, 6.9d, 0.42096d, 69420d };
+      double[] testInput = { 420d, 6.9d};
       testNetwork.SaveSynapses(@"D:\C# Files\ai\gen\synapses.ai");
       Console.WriteLine("The first net.");
       Console.WriteLine(testNetwork.Use(testInput)[0]);
@@ -26,7 +26,7 @@ namespace Program
       Console.WriteLine("The original output of this net:");
       Console.WriteLine(testNetworkTwo.Use(testInput)[0]);
       Console.WriteLine("This should give the same output as the first net work... (same input)");
-      testNetworkTwo.LoadSynapses(@"D:\C# Files\ai\gen\synapses.ai");
+      testNetworkTwo.LoadSynapses(@"D:\C# Files\ai\gen\synapses{2}.ai");
       Console.WriteLine(testNetworkTwo.Use(testInput)[0]);
     }
   }

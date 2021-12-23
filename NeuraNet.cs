@@ -96,7 +96,7 @@ namespace NeuraNet
     {
       for (int i = 0; i <= numberOfSpecimen - 1; i++)
       {
-        this.enviroment[i] = new Net(this.nodes, this.synapses);
+        this.enviroment[i] = new Net(this.shape, this.nodes, this.synapses);
         // To ensure that we generate different Nets each time.
         this.FillSynapses();
       }
@@ -107,11 +107,13 @@ namespace NeuraNet
   class Net
   {
     public int score { get; set; }
+    public int[] shape { get; set; }
     public double[][] nodes { get; set; }
     public double[][][] synapses { get; set; }
 
-    public Net(double[][] nodes, double[][][] synapses)
+    public Net(int[] shape, double[][] nodes, double[][][] synapses)
     {
+      this.shape = shape;
       this.nodes = nodes;
       this.synapses = synapses;
     }
@@ -184,29 +186,68 @@ namespace NeuraNet
     /// </returns>
     public double[][][] SaveSynapses(string path)
     {
-      //TO.DO(nobel)fic this so it prints as a python array.
-      using (FileStream fs = File.Open(path, System.IO.FileMode.OpenOrCreate))
+      //TODO(nobel002) do the file IO but good this Time
+      #region Path Stuff
+      string path_ = path;
+      path_ = path_.Substring(0, path_.Length - 3);
+      path_ += '{';
+      int prev = this.shape[0];
+      int mult = 1;
+
+      for (int i = 1; i <= this.shape.Length - 1; i++)
       {
-        StreamWriter sw = new StreamWriter(fs);
-        for (int i = 0; i <= this.synapses.Length - 1; i++)
+        if (prev == this.shape[i])
         {
-          for (int j = 0; j <= this.synapses[i].Length - 1; j++)
-          {
-            for (int k = 0; k <= this.synapses[i][j].Length - 1; k++)
-            {
-              sw.Write(this.synapses[i][j][k]);
-              if (k < this.synapses[i][j].Length -1)
-              {
-                sw.Write(';');
-              }
-            }
-            if (j < this.synapses[i].Length -1)
-            {
-              sw.Write('|');
-            }
-          }
-          sw.Write('\n');
+          mult++;
         }
+        else
+        {
+          if (mult > 1)
+          {
+            path_ += Convert.ToString(prev);
+            path_ += 'x';
+            path_ += Convert.ToString(mult);
+            mult = 1;
+          }
+          else
+          {
+            path_ += Convert.ToString(prev);
+          }
+          if (i < this.shape.Length)
+            path_ += ',';
+        }
+        prev = this.shape[i];
+
+      }
+      path_ += Convert.ToString(this.shape[this.shape.Length - 1]);
+      path_ += "}.ai";
+      #endregion
+      Console.WriteLine(path_);
+      if (!File.Exists(path_))
+      {
+        using (StreamWriter sw = File.CreateText(path_))
+        {
+          for (int i = 0; i <= this.synapses.Length - 1; i++)
+          {
+            for (int j = 0; j <= this.synapses[i].Length - 1; j++)
+            {
+              for (int k = 0; k <= this.synapses[i][j].Length - 1; k++)
+              {
+                sw.Write(this.synapses[i][j][k]);
+                if (k < this.synapses[i][j].Length - 1)
+                  sw.Write(';');
+              }
+              if (j < this.synapses[i].Length - 1)
+                sw.Write('|');
+            }
+            if (i <= this.synapses.Length - 1)
+              sw.Write("\n");
+          }
+        }
+      }
+      else
+      {
+        throw new Exception("File Error, the file you are trying to save  to already exists.");
       }
       return this.synapses;
     }
