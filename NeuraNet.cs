@@ -79,7 +79,7 @@ namespace NeuraNet
     /// <summary>
     /// Fills the synapses with noise.
     /// </summary>
-    void FillSynapses()
+    void FillSynapses(int index = 0)
     {
       for (int i = 0; i <= this.synapses.Length - 1; i++)
       {
@@ -88,6 +88,8 @@ namespace NeuraNet
           for (int k = 0; k <= this.synapses[i][j].Length - 1; k++)
           {
             this.synapses[i][j][k] = rnd.NextDouble();
+            if (index > 0)
+              Console.WriteLine($"Called the rnd.next double for the {index}th net");
           }
         }
       }
@@ -96,10 +98,14 @@ namespace NeuraNet
     {
       for (int i = 0; i <= numberOfSpecimen - 1; i++)
       {
+        Console.WriteLine(Convert.ToString(i) + ',');
+        this.FillSynapses(i + 1);
         this.enviroment[i] = new Net(this.shape, this.nodes, this.synapses);
         // To ensure that we generate different Nets each time.
-        this.FillSynapses();
+        // rnd.NextDouble();
+
       }
+      Console.Write('\n');
       return this.enviroment;
     }
   }
@@ -117,7 +123,7 @@ namespace NeuraNet
       this.nodes = nodes;
       this.synapses = synapses;
     }
-    //TO_DO(nobel) write the use function so we can calculate everything.
+    //TODO.(nobel) write the use function so we can calculate everything.
 
     /// <summary>
     /// This uses a specific net. Meaning it calculates the weighted sum over the whole net.
@@ -186,7 +192,7 @@ namespace NeuraNet
     /// </returns>
     public double[][][] SaveSynapses(string path)
     {
-      //TODO(nobel002) do the file IO but good this Time
+      //TODO.(nobel002) do the file IO but good this Time
       #region Path Stuff
       string path_ = path;
       path_ = path_.Substring(0, path_.Length - 3);
@@ -225,31 +231,39 @@ namespace NeuraNet
       Console.WriteLine(path_);
       if (!File.Exists(path_))
       {
-        using (StreamWriter sw = File.CreateText(path_))
-        {
-          for (int i = 0; i <= this.synapses.Length - 1; i++)
-          {
-            for (int j = 0; j <= this.synapses[i].Length - 1; j++)
-            {
-              for (int k = 0; k <= this.synapses[i][j].Length - 1; k++)
-              {
-                sw.Write(this.synapses[i][j][k]);
-                if (k < this.synapses[i][j].Length - 1)
-                  sw.Write(';');
-              }
-              if (j < this.synapses[i].Length - 1)
-                sw.Write('|');
-            }
-            if (i <= this.synapses.Length - 1)
-              sw.Write("\n");
-          }
-        }
+        WriteToDisk(path_);
       }
       else
       {
-        throw new Exception("File Error, the file you are trying to save  to already exists.");
+        // Fk it just delete the file and re write it...
+        File.Delete(path_);
+        WriteToDisk(path_);
+        //throw new Exception("File Error, the file you are trying to save  to already exists.");
       }
       return this.synapses;
+    }
+
+    void WriteToDisk(string path_)
+    {
+      using (StreamWriter sw = File.CreateText(path_))
+      {
+        for (int i = 0; i <= this.synapses.Length - 1; i++)
+        {
+          for (int j = 0; j <= this.synapses[i].Length - 1; j++)
+          {
+            for (int k = 0; k <= this.synapses[i][j].Length - 1; k++)
+            {
+              sw.Write(this.synapses[i][j][k]);
+              if (k < this.synapses[i][j].Length - 1)
+                sw.Write(';');
+            }
+            if (j < this.synapses[i].Length - 1)
+              sw.Write('|');
+          }
+          if (i < this.synapses.Length - 1)
+            sw.Write("\n");
+        }
+      }
     }
 
     /// <summary>
