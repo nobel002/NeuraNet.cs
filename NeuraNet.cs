@@ -112,7 +112,7 @@ namespace NeuraNet
 
   class Net
   {
-    public int score { get; set; }
+    public double score { get; set; }
     public int[] shape { get; set; }
     public double[][] nodes { get; set; }
     public double[][][] synapses { get; set; }
@@ -242,7 +242,11 @@ namespace NeuraNet
       }
       return this.synapses;
     }
-
+    /// <summary>
+    /// The actual code to write to the disc.
+    /// Note this always writes. Only use if you know you can savily write at that location.
+    /// </summary>
+    /// <param name="path_">the path where to write to.</param>
     void WriteToDisk(string path_)
     {
       using (StreamWriter sw = File.CreateText(path_))
@@ -291,5 +295,21 @@ namespace NeuraNet
       }
       return this.synapses;
     }
+
+    /// <summary>
+    /// This is a function which you must override.
+    /// I can't write an all in one Score method as it may change depending upon it's use.
+    /// This however must be defined in the Net Creator Class.
+    /// </summary>
+    /// <param name="score">This is a placeholder</param>
+    /// <returns>
+    /// The score for this particulair Net. This is then used by the train method to determine its mutaion strength.
+    /// </returns>
+    public virtual double Score(double score = 0)
+    {
+      this.score = score;
+      return this.score;
+    }
+
   }
 }
