@@ -17,6 +17,8 @@ namespace NeuraNet
     public Net[] enviroment { get; set; }
     public int numberOfSpecimen { get; set; }
     public int trainingTime { get; set; }
+    public decimal minMutationStrength = 0m;
+    public decimal maxMutationStrength = 1m;
     private Random rnd = new Random();
 
     public NetCreator(int[] shape, int numberOfSpecimen, int trainingTime)
@@ -108,6 +110,59 @@ namespace NeuraNet
       Console.Write('\n');
       return this.enviroment;
     }
+
+    /// <summary>
+    /// Sorts the enviroment from best to worst preforming Net.
+    /// </summary>
+    // ToDo(nobel002) implement Sort
+    void Sort()
+    {
+      this.enviroment = this.enviroment;
+    }
+    /// <summary>
+    /// Trains the Networks, it does this for a specified amount of time.
+    /// </summary>
+    /// <param name="index">This sould be a number that is inside the enviroment range. An specifies which network you want to return after its done.</param>
+    /// <returns>This returns the indexth Network we got</returns>
+    public Net Train(int index)
+    {
+      for (int i = 0; i < this.trainingTime; i++)
+      {
+        for (int j = 0; j < this.enviroment.Length - 1; j++)
+        {
+          this.enviroment[j].Score();
+        }
+        Sort();
+        double maxScore = this.enviroment[0].score;
+        double minScore = this.enviroment[this.enviroment.Length - 1].score;
+        for (int j = 0; j < this.enviroment.Length - 1; j++)
+        {
+          double thisScore = this.enviroment[j].score;
+          this.enviroment[j].Mutate(Lerp(thisScore, minScore, maxScore, this.minMutationStrength, this.maxMutationStrength));
+        }
+      }
+      Sort();
+      return this.enviroment[index];
+    }
+
+
+    /// <summary>
+    /// Lerps a value from 1 range to another.
+    /// This is used as it maintains a homeomorpic property.
+    /// aka x < y => f(x) < f(y)
+    /// </summary>
+    /// <param name="current">The current value we need to lerp</param>
+    /// <param name="minScore">The minimum value of the set</param>
+    /// <param name="maxScore">The maximum value of the set</param>
+    /// <param name="minStrength">The minimum value a score needs to be altered with</param>
+    /// <param name="maxStrength">The maximum value a score can be altered with</param>
+    /// <returns>The value with which we're altering the synapses with</returns>
+    // TODo(nobel002) implement somthing else than liniar interoplation.
+    decimal Lerp(double current, double minScore, double maxScore, decimal minStrength, decimal maxStrength)
+    {
+      return 0m;
+    }
+
   }
 
   class Net
@@ -300,6 +355,7 @@ namespace NeuraNet
     /// This is a function which you must override.
     /// I can't write an all in one Score method as it may change depending upon it's use.
     /// This however must be defined in the Net Creator Class.
+    /// Note that the Use function should be used here...
     /// </summary>
     /// <param name="score">This is a placeholder</param>
     /// <returns>
@@ -307,9 +363,18 @@ namespace NeuraNet
     /// </returns>
     public virtual double Score(double score = 0)
     {
+      // ToDo(Nobel002) fix this so that it becomes obvious that one must override this particulair function.
       this.score = score;
       return this.score;
     }
 
+    /// <summary>
+    /// This alters the synapses at random. Hence you must determine how mutch.
+    /// </summary>
+    /// <param name="mutationStrength">The mutation strength, a mesure of how much the synapses need to be altered.</param>
+    public void Mutate(decimal mutationStrength)
+    {
+      // ToDo(nobel) so for each synapse => synapse += mutStr * (2*rnd()-1)
+    }
   }
 }

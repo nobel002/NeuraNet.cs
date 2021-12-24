@@ -61,11 +61,13 @@ In contradiction to what you'd expect is the comma used as the decimal point. Th
 - [ ] Check how we can save the nets to dll's or somthing
 - [ ] Finish the net class  
 - [ ] Fix the write to `.ai` because its broken... It does generate the matrix but doesnt generate the .ai file properly try a {4x3,2} shap for example it doesnt write that to a file which is obviously wrong.
+- [ ] Make it so that it doesn't only lean to NEAT because that would be to small of a thing to focus on. Hence I need to update the mutation function so that it is't always random mutations.
 
 + in the Creator class  
 - [ ] Train() { }  
 - [ ] Mutate() { }  
 - [ ] Sort() { }  
+- [ ] Add an option to choose for howlong we must train the networks. Options may include: a specified number of itterations. (Pro's: the training will always finish even if their isnt inprovement, Cons: see the pro's) or until a specified succes rate is reached. (Pro's 'n cons see the previous but invert the arguments).
 + in the Net class
 - [ ] Check wheter the provided synapses match the synapses shape in the SetSynapses();
 - [ ] Normalise the outputs.
