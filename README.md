@@ -71,6 +71,7 @@ In contradiction to what you'd expect is the comma used as the decimal point. Th
 - [ ] Normalise the outputs.
 - [ ] Load(synapses) { }  
 - [ ] Store() { }  
+- [ ] Fix the write function as it doesn't seem like a good idea to just plain old delete the file if it already exists and then create it and write to that.
 
 + Things I could do
 - [ ] In the `.ai` files but half of the possible hex values are used. Their are 14 different characters `0-9`, `,`, `;`, `|` and `\n` meaning if I encode each character as half a hex value I can essentially half the file size as I don't ude UTF-8 text encoding. This would require an other program to read and write to such files. (This would yeild some unused values, namily `E? - F?` and nothing would end in  E or F due to the concat style, meaning I could theoreticaly use that place to shift the next bytes a few spaces forward and in doing so I would save some more space, reducing the file by another fourth I think)
