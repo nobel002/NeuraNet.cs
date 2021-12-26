@@ -17,8 +17,8 @@ namespace NeuraNet
     public Net[] enviroment { get; set; }
     public int numberOfSpecimen { get; set; }
     public int trainingTime { get; set; }
-    public decimal minMutationStrength = 0m;
-    public decimal maxMutationStrength = 1m;
+    public double minMutationStrength = 0d;
+    public double maxMutationStrength = 1d;
     private Random rnd = new Random();
 
     public NetCreator(int[] shape, int numberOfSpecimen, int trainingTime)
@@ -78,30 +78,30 @@ namespace NeuraNet
       }
     }
 
-    /// <summary>
-    /// Fills the synapses with noise.
-    /// </summary>
-    void FillSynapses(int index = 0)
-    {
-      for (int i = 0; i <= this.synapses.Length - 1; i++)
+    /*
+      /// <summary>
+      /// Fills the synapses with noise.
+      /// </summary>
+      void FillSynapses()
       {
-        for (int j = 0; j <= this.synapses[i].Length - 1; j++)
+        for (int i = 0; i <= this.synapses.Length - 1; i++)
         {
-          for (int k = 0; k <= this.synapses[i][j].Length - 1; k++)
+          for (int j = 0; j <= this.synapses[i].Length - 1; j++)
           {
-            this.synapses[i][j][k] = rnd.NextDouble();
-            if (index > 0)
-              Console.WriteLine($"Called the rnd.next double for the {index}th net");
+            for (int k = 0; k <= this.synapses[i][j].Length - 1; k++)
+            {
+              this.synapses[i][j][k] = rnd.NextDouble();
+            }
           }
         }
       }
-    }
+      */
     public Net[] CreateEnv()
     {
       for (int i = 0; i <= numberOfSpecimen - 1; i++)
       {
-        Console.WriteLine(Convert.ToString(i) + ',');
-        this.FillSynapses(i + 1);
+        // Console.WriteLine(Convert.ToString(i) + ',');
+        // this.FillSynapses(i + 1);
         this.enviroment[i] = new Net(this.shape, this.nodes, this.synapses);
         // To ensure that we generate different Nets each time.
         // rnd.NextDouble();
@@ -158,9 +158,13 @@ namespace NeuraNet
     /// <param name="maxStrength">The maximum value a score can be altered with</param>
     /// <returns>The value with which we're altering the synapses with</returns>
     // TODo(nobel002) implement somthing else than liniar interoplation.
-    decimal Lerp(double current, double minScore, double maxScore, decimal minStrength, decimal maxStrength)
+    double Lerp(double current, double minScore, double maxScore, double minStrength, double maxStrength)
     {
-      return 0m;
+      // This is a linear lerp.
+      // Calculates how far along the current range it is.
+      double amountAlongInput = (current - minScore) / (maxScore - minScore);
+      // Map to the correct range.
+      return minStrength + amountAlongInput * (maxStrength - minStrength);
     }
 
   }
@@ -171,12 +175,14 @@ namespace NeuraNet
     public int[] shape { get; set; }
     public double[][] nodes { get; set; }
     public double[][][] synapses { get; set; }
+    private Random rnd = new Random;
 
     public Net(int[] shape, double[][] nodes, double[][][] synapses)
     {
       this.shape = shape;
       this.nodes = nodes;
       this.synapses = synapses;
+      FillSynapses();
     }
     //TODO.(nobel) write the use function so we can calculate everything.
 
@@ -372,9 +378,36 @@ namespace NeuraNet
     /// This alters the synapses at random. Hence you must determine how mutch.
     /// </summary>
     /// <param name="mutationStrength">The mutation strength, a mesure of how much the synapses need to be altered.</param>
-    public void Mutate(decimal mutationStrength)
+    public void Mutate(double mutationStrength)
     {
-      // ToDo(nobel) so for each synapse => synapse += mutStr * (2*rnd()-1)
+      // ToDo.(nobel) so for each synapse => synapse += mutStr * (2*rnd()-1)
+      for (int i = 0; i <= this.synapses.Length - 1; i++)
+      {
+        for (int j = 0; j <= this.synapses[i].Length - 1; j++)
+        {
+          for (int k = 0; k <= this.synapses[i][j].Length - 1; k++)
+          {
+            this.synapses[i][j][k] += mutationStrength * (2 * rnd.NextDouble() - 1);
+          }
+        }
+      }
+    }
+
+    /// <summary>
+    /// Fills the synapses with noise.
+    /// </summary>
+    void FillSynapses()
+    {
+      for (int i = 0; i <= this.synapses.Length - 1; i++)
+      {
+        for (int j = 0; j <= this.synapses[i].Length - 1; j++)
+        {
+          for (int k = 0; k <= this.synapses[i][j].Length - 1; k++)
+          {
+            this.synapses[i][j][k] = rnd.NextDouble();
+          }
+        }
+      }
     }
   }
 }
