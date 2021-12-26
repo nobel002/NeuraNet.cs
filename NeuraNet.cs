@@ -42,7 +42,7 @@ namespace NeuraNet
       //FillNodes();
       Console.WriteLine("Created Nodes...");
       CreateSynapses();
-      FillSynapses();
+      // FillSynapses();
       Console.WriteLine("Created Synapses...");
       CreateEnv();
       Console.WriteLine("Created the enviroment with all the Nets.");
@@ -175,7 +175,7 @@ namespace NeuraNet
     public int[] shape { get; set; }
     public double[][] nodes { get; set; }
     public double[][][] synapses { get; set; }
-    private Random rnd = new Random;
+    private Random rnd = new Random();
 
     public Net(int[] shape, double[][] nodes, double[][][] synapses)
     {
@@ -238,7 +238,19 @@ namespace NeuraNet
     /// </param>
     public void SetSynapses(double[][][] synapses)
     {
-      //ToDo(Nobel) check whether the synapses and this.synapses match in shape.
+      //ToDo.(Nobel) check whether the synapses and this.synapses match in shape.
+      // The code to check whether the shapes match.
+      if (this.synapses.Length != synapses.Length)
+        throw new Exception("The shape you provided is not the expected shape.");
+      for (int i = 0; i <= synapses.Length - 1; i++)
+      {
+        for (int j = 0; j <= synapses[i].Length - 1; j++)
+        {
+          if (this.synapses[i][j].Length != synapses[i][j].Length)
+            throw new Exception("The shape you provided is not the expected shape.");
+        }
+      }
+
       this.synapses = synapses;
     }
 
@@ -342,13 +354,13 @@ namespace NeuraNet
     {
       // TODO(nobel002) Check if the size of the provided .ai file is the same as the shape of the existing synaps matrix.
       string[] text = File.ReadAllLines(path);
-      for (int i = 0; i <= text.Length - 1; i++)
+      for (int i = 0; i < text.Length - 1; i++)
       {
         string[] splittedStrings = text[i].Split('|');
-        for (int j = 0; j <= splittedStrings.Length - 1; j++)
+        for (int j = 0; j < splittedStrings.Length - 1; j++)
         {
           string[] individualNumbers = splittedStrings[j].Split(';');
-          for (int k = 0; k <= individualNumbers[j].Length - 1; k++)
+          for (int k = 0; k < individualNumbers[j].Length - 1; k++)
           {
             this.synapses[i][j][k] = Convert.ToDouble(individualNumbers[k]);
           }

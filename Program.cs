@@ -12,7 +12,7 @@ namespace Program
     {
       Console.WriteLine("Hello World!");
       // 128 -> 4
-      int[] shape = { 2, 1, 1, 2 };
+      int[] shape = { 2, 2, 1, 2 };
       const int specimenCount = 10;
       const int trainTime = (int)10e3;
       NetCreator test = new NetCreator(shape, specimenCount, trainTime);
