@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 
+
 namespace NeuraNet
 {
   /// <summary>
@@ -12,13 +13,15 @@ namespace NeuraNet
   class NetCreator
   {
     public int[] shape { get; set; }
-    public double[][] nodes { get; set; }
-    public double[][][] synapses { get; set; }
+    public float[][] nodes { get; set; }
+    public float[][][] synapses { get; set; }
     public Net[] enviroment { get; set; }
     public int numberOfSpecimen { get; set; }
     public int trainingTime { get; set; }
-    public double minMutationStrength = 0d;
-    public double maxMutationStrength = 1d;
+    //Not shure if these are needed but hey
+    public float minMutationStrength = 0f;
+    public float maxMutationStrength = 1f;
+    public float learingRate = 0.5f; //Not yet implemented
     private Random rnd = new Random();
 
     public NetCreator(int[] shape, int numberOfSpecimen, int trainingTime)
@@ -26,8 +29,8 @@ namespace NeuraNet
       this.shape = shape;
       this.numberOfSpecimen = numberOfSpecimen;
       this.trainingTime = trainingTime;
-      this.nodes = new double[this.shape.Length][];
-      this.synapses = new double[this.shape.Length - 1][][];
+      this.nodes = new float[this.shape.Length][];
+      this.synapses = new float[this.shape.Length - 1][][];
       this.enviroment = new Net[numberOfSpecimen];
       this.Init();
     }
@@ -57,7 +60,7 @@ namespace NeuraNet
 
       for (int i = 0; i <= shape.Length - 1; i++)
       {
-        this.nodes[i] = new double[this.shape[i]];
+        this.nodes[i] = new float[this.shape[i]];
         Array.Clear(this.nodes[i], 0, this.shape[i]);
       }
     }
@@ -69,10 +72,10 @@ namespace NeuraNet
     {
       for (int i = 0; i <= this.shape.Length - 2; i++)
       {
-        this.synapses[i] = new double[this.shape[i + 1]][];
+        this.synapses[i] = new float[this.shape[i + 1]][];
         for (int j = 0; j <= this.synapses[i].Length - 1; j++)
         {
-          this.synapses[i][j] = new double[this.shape[i]];
+          this.synapses[i][j] = new float[this.shape[i]];
           //Array.Clear(this.synapses[i][j], 0, this.shape[i]);
         }
       }
@@ -90,7 +93,7 @@ namespace NeuraNet
           {
             for (int k = 0; k <= this.synapses[i][j].Length - 1; k++)
             {
-              this.synapses[i][j][k] = rnd.NextDouble();
+              this.synapses[i][j][k] = rnd.NextFloat();
             }
           }
         }
@@ -104,7 +107,7 @@ namespace NeuraNet
         // this.FillSynapses(i + 1);
         this.enviroment[i] = new Net(this.shape, this.nodes, this.synapses);
         // To ensure that we generate different Nets each time.
-        // rnd.NextDouble();
+        // rnd.NextFloat();
 
       }
       Console.Write('\n');
@@ -133,11 +136,11 @@ namespace NeuraNet
           this.enviroment[j].Score();
         }
         Sort();
-        double maxScore = this.enviroment[0].score;
-        double minScore = this.enviroment[this.enviroment.Length - 1].score;
+        float maxScore = this.enviroment[0].score;
+        float minScore = this.enviroment[this.enviroment.Length - 1].score;
         for (int j = 0; j < this.enviroment.Length - 1; j++)
         {
-          double thisScore = this.enviroment[j].score;
+          float thisScore = this.enviroment[j].score;
           this.enviroment[j].Mutate(Lerp(thisScore, minScore, maxScore, this.minMutationStrength, this.maxMutationStrength));
         }
       }
@@ -158,11 +161,11 @@ namespace NeuraNet
     /// <param name="maxStrength">The maximum value a score can be altered with</param>
     /// <returns>The value with which we're altering the synapses with</returns>
     // TODo(nobel002) implement somthing else than liniar interoplation.
-    double Lerp(double current, double minScore, double maxScore, double minStrength, double maxStrength)
+    float Lerp(float current, float minScore, float maxScore, float minStrength, float maxStrength)
     {
       // This is a linear lerp.
       // Calculates how far along the current range it is.
-      double amountAlongInput = (current - minScore) / (maxScore - minScore);
+      float amountAlongInput = (current - minScore) / (maxScore - minScore);
       // Map to the correct range.
       return minStrength + amountAlongInput * (maxStrength - minStrength);
     }
@@ -171,13 +174,13 @@ namespace NeuraNet
 
   class Net
   {
-    public double score { get; set; }
+    public float score { get; set; }
     public int[] shape { get; set; }
-    public double[][] nodes { get; set; }
-    public double[][][] synapses { get; set; }
+    public float[][] nodes { get; set; }
+    public float[][][] synapses { get; set; }
     private Random rnd = new Random();
 
-    public Net(int[] shape, double[][] nodes, double[][][] synapses)
+    public Net(int[] shape, float[][] nodes, float[][][] synapses)
     {
       this.shape = shape;
       this.nodes = nodes;
@@ -190,7 +193,7 @@ namespace NeuraNet
     /// This uses a specific net. Meaning it calculates the weighted sum over the whole net.
     /// </summary>
     /// <param name="inputs">
-    /// This is a double[] with the same length as shape[0].
+    /// This is a float[] with the same length as shape[0].
     /// </param>
     /// <returns>
     /// The output array. This will return an array where the numbers of the last nodes are stored. So you can process them however you like.
@@ -198,7 +201,7 @@ namespace NeuraNet
     /// <exception cref="Exception">
     /// This trows an exception if the input array of the net and the provided input array don't match in length.
     /// </exception>
-    public double[] Use(double[] inputs)
+    public float[] Use(float[] inputs)
     {
       if (inputs.Length == this.nodes[0].Length)
       {
@@ -234,9 +237,9 @@ namespace NeuraNet
     /// This sets the synapses of a specific Net instance. Make shure that the shape matches the shape it already has.
     /// </summary>
     /// <param name="synapses">
-    /// double[][][] the synapses array you want the net to have.
+    /// Float[][][] the synapses array you want the net to have.
     /// </param>
-    public void SetSynapses(double[][][] synapses)
+    public void SetSynapses(float[][][] synapses)
     {
       //ToDo.(Nobel) check whether the synapses and this.synapses match in shape.
       // The code to check whether the shapes match.
@@ -263,9 +266,9 @@ namespace NeuraNet
     /// <returns>
     /// For good mesures it also returns the synaps array inorder to process it further.
     /// </returns>
-    public double[][][] SaveSynapses(string path)
+    public float[][][] SaveSynapses(string path)
     {
-      //TODO.(nobel002) do the file IO but good this Time
+      //TODO.(nobel002) do the file IO but good this time.
       #region Path Stuff
       string path_ = path;
       path_ = path_.Substring(0, path_.Length - 3);
@@ -322,6 +325,10 @@ namespace NeuraNet
     /// <param name="path_">the path where to write to.</param>
     void WriteToDisk(string path_)
     {
+      String currentDirectory = System.IO.Directory.GetCurrentDirectory();
+      Console.WriteLine("-----4 testing ----");
+      Console.WriteLine(currentDirectory);
+      path_ = currentDirectory + @"\..\..\..\" + path_;
       using (StreamWriter sw = File.CreateText(path_))
       {
         for (int i = 0; i <= this.synapses.Length - 1; i++)
@@ -350,7 +357,7 @@ namespace NeuraNet
     /// </summary>
     /// <param name="path">The path to the .ai file you want to load.</param>
     /// <returns>It retruns the synapses after their updated</returns>
-    public double[][][] LoadSynapses(string path)
+    public float[][][] LoadSynapses(string path)
     {
       // TODO(nobel002) Check if the size of the provided .ai file is the same as the shape of the existing synaps matrix.
       string[] text = File.ReadAllLines(path);
@@ -362,7 +369,7 @@ namespace NeuraNet
           string[] individualNumbers = splittedStrings[j].Split(';');
           for (int k = 0; k < individualNumbers[j].Length - 1; k++)
           {
-            this.synapses[i][j][k] = Convert.ToDouble(individualNumbers[k]);
+            this.synapses[i][j][k] = Convert.ToSingle(individualNumbers[k]);
           }
         }
       }
@@ -379,27 +386,30 @@ namespace NeuraNet
     /// <returns>
     /// The score for this particulair Net. This is then used by the train method to determine its mutaion strength.
     /// </returns>
-    public virtual double Score(double score = 0)
+    public virtual float Score(float score = 0)
     {
       // ToDo(Nobel002) fix this so that it becomes obvious that one must override this particulair function.
+      // Expected output - cost
       this.score = score;
       return this.score;
     }
 
     /// <summary>
     /// This alters the synapses at random. Hence you must determine how mutch.
+    /// Implement the back propagation algorithm
     /// </summary>
     /// <param name="mutationStrength">The mutation strength, a mesure of how much the synapses need to be altered.</param>
-    public void Mutate(double mutationStrength)
+    public void Mutate(float mutationStrength)
     {
-      // ToDo.(nobel) so for each synapse => synapse += mutStr * (2*rnd()-1)
+      // ToDo.(nobel) so for each synapsyse calculate the derivative and update the nodes and biases accordingly
+      // ToDo (Nobel) so implement the back propagation algorithm
       for (int i = 0; i <= this.synapses.Length - 1; i++)
       {
         for (int j = 0; j <= this.synapses[i].Length - 1; j++)
         {
           for (int k = 0; k <= this.synapses[i][j].Length - 1; k++)
           {
-            this.synapses[i][j][k] += mutationStrength * (2 * rnd.NextDouble() - 1);
+            this.synapses[i][j][k] += mutationStrength * (2 * rnd.NextSingle() - 1);
           }
         }
       }
@@ -416,7 +426,7 @@ namespace NeuraNet
         {
           for (int k = 0; k <= this.synapses[i][j].Length - 1; k++)
           {
-            this.synapses[i][j][k] = rnd.NextDouble();
+            this.synapses[i][j][k] = rnd.NextSingle();
           }
         }
       }

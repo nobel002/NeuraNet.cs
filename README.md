@@ -54,7 +54,7 @@ In contradiction to what you'd expect is the comma used as the decimal point. Th
 
 
 ## TODO
-- [ ] Considere wheter to use `System.Double` or `System.Decimal`... This might impact speed and also might affect precision. (As in the decimal system might have a theoretical better precision as the numbers can become more acurate.)
+- [X] Considere wheter to use `System.Double` or `System.Decimal`... This might impact speed and also might affect precision. (As in the decimal system might have a theoretical better precision as the numbers can become more acurate.)  We will use System.float, as mathf is probably faster and the theoretical precesion will probably never be reached due to the training algorithm.
 - [ ] so make the used variable a `<T>` variable and pass it as an argument so I can compile three versions: a `float`, `double` and `decimal` one.
 - [ ] make a published version.
 - [ ] Fix the `.gitignore` file  
@@ -78,7 +78,6 @@ In contradiction to what you'd expect is the comma used as the decimal point. Th
 
 + Things I could do
 - [ ] In the `.ai` files but half of the possible hex values are used. Their are 14 different characters `0-9`, `,`, `;`, `|` and `\n` meaning if I encode each character as half a hex value I can essentially half the file size as I don't ude UTF-8 text encoding. This would require an other program to read and write to such files. (This would yeild some unused values, namily `E? - F?` and nothing would end in  E or F due to the concat style, meaning I could theoreticaly use that place to shift the next bytes a few spaces forward and in doing so I would save some more space, reducing the file by another fourth I think)
-
 
 # Licence
 
