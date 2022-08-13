@@ -54,27 +54,29 @@ In contradiction to what you'd expect is the comma used as the decimal point. Th
 
 
 ## TODO
-- [X] Considere wheter to use `System.Double` or `System.Decimal`... This might impact speed and also might affect precision. (As in the decimal system might have a theoretical better precision as the numbers can become more acurate.)  We will use System.float, as mathf is probably faster and the theoretical precesion will probably never be reached due to the training algorithm.
-- [ ] so make the used variable a `<T>` variable and pass it as an argument so I can compile three versions: a `float`, `double` and `decimal` one.
+- [ ] Remove all of the commented out code.
 - [ ] make a published version.
-- [ ] Fix the `.gitignore` file  
 - [ ] Check how we can save the nets to dll's or somthing
 - [ ] Finish the net class  
 - [ ] Fix the write to `.ai` because its broken... It does generate the matrix but doesnt generate the .ai file properly try a {4x3,2} shap for example it doesnt write that to a file which is obviously wrong.
-- [ ] Make it so that it doesn't only lean to NEAT because that would be to small of a thing to focus on. Hence I need to update the mutation function so that it is't always random mutations.
-- [ ] Remove all of the commented out code.
+- [ ] Make it use gradient descend, and back propagation this isn't that hard you can do it 😅
+- [ ] Fix the `.gitignore` file  
+- [X] Considere wheter to use `System.Double` or `System.Decimal`... This might impact speed and also might affect precision. (As in the decimal system might have a theoretical better precision as the numbers can become more acurate.)  We will use System.float, as mathf is probably faster and the theoretical precesion will probably never be reached due to the training algorithm.
 
 + in the Creator class  
 - [ ] Train() { }  
 - [ ] Mutate() { }  
 - [ ] Sort() { }  
-- [ ] Add an option to choose for howlong we must train the networks. Options may include: a specified number of itterations. (Pro's: the training will always finish even if their isnt inprovement, Cons: see the pro's) or until a specified succes rate is reached. (Pro's 'n cons see the previous but invert the arguments).
+- [ ] Change the training time, currently it goes for a prespecified number of cycles but by using gradient descent we should `use epochs` this is a mesure for how many times the algo has seen a mini-bach
 + in the Net class
+- [ ] Make use of mini-baches, this is a good thing.
 - [ ] Check wheter the provided synapses match the synapses shape in the SetSynapses();
 - [ ] Normalise the outputs.
 - [ ] Load(synapses) { }  
 - [ ] Store() { }  
 - [ ] Fix the write function as it doesn't seem like a good idea to just plain old delete the file if it already exists and then create it and write to that.
++ Things i **should** do
+- [ ] Implement a way to train the algorithm
 
 + Things I could do
 - [ ] In the `.ai` files but half of the possible hex values are used. Their are 14 different characters `0-9`, `,`, `;`, `|` and `\n` meaning if I encode each character as half a hex value I can essentially half the file size as I don't ude UTF-8 text encoding. This would require an other program to read and write to such files. (This would yeild some unused values, namily `E? - F?` and nothing would end in  E or F due to the concat style, meaning I could theoreticaly use that place to shift the next bytes a few spaces forward and in doing so I would save some more space, reducing the file by another fourth I think)
